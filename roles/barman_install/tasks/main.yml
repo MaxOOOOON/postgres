@@ -1,0 +1,36 @@
+---
+- name: Install the repository RPM
+  dnf:
+    name: 'https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
+    state: present
+    disable_gpg_check: yes
+
+- name: Disable the built-in PostgreSQL module
+  shell: 'dnf -qy module disable postgresql'
+ 
+
+- name: Install PostgreSQL
+  dnf:
+    name: postgresql14
+    state: present
+
+- name: Install barman
+  yum:
+    name: barman
+    state: present
+
+- name: Copy barman config
+  copy:
+    src: barman.conf
+    dest: /etc/barman.conf
+
+
+- name: Copy barman backup server config
+  template:
+    src: backup.conf.j2
+    dest: /etc/barman.d/backup.conf
+    mode: '0644'
+
+  # - name: Create replication slot for backup
+  #   become_user: barman
+  #   command: barman receive-wal --create-slot {{ barman_stream_slot }}

@@ -1,0 +1,34 @@
+---
+- name: Copy config postgresql.conf
+  copy: 
+    src: postgresql.conf
+    dest: /var/lib/pgsql/14/data/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: 0600
+
+- name: Copy config pg_hba.conf
+  copy: 
+    src: pg_hba.conf
+    dest: /var/lib/pgsql/14/data/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: 0600
+
+# - name: Create replication role
+#   become: yes
+#   become_user: postgres
+#   shell: "createuser --replication -P -e replicator"
+
+- name: Create replication role
+  become: yes
+  become_user: postgres
+  shell: psql -c "CREATE USER replicator WITH REPLICATION ENCRYPTED PASSWORD 'replicator';"
+
+- name: Reload postgres14
+  systemd:
+    name: postgresql-14
+    state: restarted
+
+# firewall-cmd --add-service=postgresql --permanent
+# firewall-cmd --reload

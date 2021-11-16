@@ -1,0 +1,17 @@
+---
+- name: Backup data folder
+  copy: 
+    src: /var/lib/pgsql/14/data
+    dest: /var/lib/pgsql/14/data_orig
+
+
+- name: Delete content & directory
+  file:
+    path: /var/lib/pgsql/14/data/
+    state: absent
+
+
+- name: Run pg_basebackup, backing up pgbase_host to pgbase_output_dir
+  command: "PGPASSWORD=replicator pg_basebackup -h 192.168.255.1 -D /var/lib/pgsql/14/data -U replicator -P -v  -R -X stream -C -S pgstandby1"
+
+
