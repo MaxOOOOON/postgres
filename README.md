@@ -26,29 +26,29 @@
 recovery.conf использовалась до 11 версии включительно, в следующих версиях настройки устанавливаются в postgresql.conf     
 
 
-Проверка репликации
+Проверка репликации на мастере
 
     SELECT * FROM pg_replication_slots;
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211118_234916.png)  
 
 Создание таблицы на мастере
 
     create database test;
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211119_001020.png)  
 
 Проверка на слейве
 
     SELECT * FROM pg_stat_wal_receiver;
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211118_235040.png)  
 
 а также проверка, создалась ли таблица
 
     psql -c "\l"
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211119_001205.png)  
 
 Проверка работы бэкапа 
 Используется stream replication backup
@@ -56,11 +56,13 @@ recovery.conf использовалась до 11 версии включите
 
     barman backup master
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211119_001600.png)  
 
 Удаление базы на мастере
 
     drop database test;
+
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211119_001446.png) 
 
 Остановка postgres
 
@@ -70,7 +72,7 @@ recovery.conf использовалась до 11 версии включите
 
     barman recover --remote-ssh-command "ssh postgres@192.168.255.1"  master 20211118T202912 /var/lib/pgsql/14/data/
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211119_001641.png)  
 
 Запуск postgres
 
@@ -78,7 +80,7 @@ recovery.conf использовалась до 11 версии включите
 
 Проверка восстановленной базы
 
-![]()  
+![](https://github.com/MaxOOOOON/postgres/blob/main/pictures/Screenshot_20211119_001909.png)  
 
 
 
