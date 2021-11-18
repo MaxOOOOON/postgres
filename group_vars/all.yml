@@ -4,4 +4,4 @@ barman_stream_slot: backup
 master_ip_add:  192.168.255.1
 barman_username: barman
 barman_db_stream: test
-barman_stream: 
+barman_stream: barman_stream

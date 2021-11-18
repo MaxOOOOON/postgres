@@ -44,12 +44,7 @@ Vagrant.configure("2") do |config|
             box.vm.provider :virtualbox do |vb|
                     vb.customize ["modifyvm", :id, "--memory", "512"]
             end        
-
-            # case boxname.to_s
-            # when "inetRouter2"
-            # box.vm.network "forwarded_port", guest: 8080, host: 8080
-            # end
-        
+      
 
 
             box.vm.provision :ansible do |ansible|

@@ -25,3 +25,52 @@
 
 recovery.conf использовалась до 11 версии включительно, в следующих версиях настройки устанавливаются в postgresql.conf     
 
+
+Проверка репликации
+
+
+Создание записи на мастера 
+
+Проверка на слейве
+
+
+
+Проверка работы бэкапа 
+Используется rsync backup
+
+Удаление файлов
+
+
+Восстановление из бэкапа
+
+
+
+
+
+
+Заметки 
+
+Pgtune от leopard. + есть книга 
+
+
+DCS - хранит кто лидер и конфигурацию кластера 
+напр. Consul + Patroni
+демон рядом с postgresql
+взаимодействует с etcd
+демон принимает решение о promotion/demotion
+
+кластер patroni: 
+consul
+haproxy
+pgbouncer
+нода Postgresql: pip install patroni, patroni.yml, dir с доступом пользов patroni 
+
+
+
+$ barman backup server-a
+$ barman list-backup server-a
+$ barman check server-a
+$ barman show-backup server-a 20180605T053654
+
+
+barman recover --remote-ssh-command "ssh postgres@192.168.255.1"  master 20211118T202912 /var/lib/pgsql/14/data/

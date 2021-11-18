@@ -19,6 +19,19 @@
     name: barman
     state: present
 
+- name: Copy ssh files
+  copy: 
+    src: '{{item.file}}'
+    dest: /var/lib/barman/.ssh/  
+    owner: barman
+    group: barman
+    mode: '{{item.mode}}'
+  loop: 
+    - { file: id_rsa, mode: '0600' }
+    - { file: id_rsa.pub, mode: '0644' }
+    - { file: authorized_keys, mode: '0600' }
+
+
 - name: Copy barman config
   copy:
     src: barman.conf
@@ -28,9 +41,18 @@
 - name: Copy barman backup server config
   template:
     src: backup.conf.j2
-    dest: /etc/barman.d/backup.conf
+    dest: /etc/barman.d/master.conf
     mode: '0644'
 
-  # - name: Create replication slot for backup
-  #   become_user: barman
-  #   command: barman receive-wal --create-slot {{ barman_stream_slot }}
+
+- name: Force Switch WAL in Barman Server
+  become_user: barman
+  shell: barman receive-wal --create-slot master
+
+
+# nohup barman receive-wal master
+
+
+- name: Force Switch WAL in Barman Server
+  become_user: barman
+  shell: barman switch-wal --force --archive master

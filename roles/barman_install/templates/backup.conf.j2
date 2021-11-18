@@ -1,7 +1,8 @@
-[{{ barman_stream_slot }}]
-description =  "PostgreSQL Database (Streaming-Only)"
-conninfo = host={{ master_ip_add }} user={{ barman_username }} dbname={{ barman_db_stream }}
-streaming_conninfo = host={{ master_ip_add }} user={{ barman_stream }} dbname={{ barman_db_stream }}
+[master]
+description =  "master postgres backup config"
+conninfo = host=192.168.255.1 user=barman port=5432 dbname=postgres password=barman
+streaming_conninfo = host=192.168.255.1 user=streaming_barman dbname=postgres password=streaming_barman
 backup_method = postgres
 streaming_archiver = on
 slot_name = barman
+create_slot = auto

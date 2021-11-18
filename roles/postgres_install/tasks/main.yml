@@ -1,7 +1,7 @@
 ---
 - name: Install the repository RPM
   dnf:
-    name: 'https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
+    name: 'https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
     state: present
     disable_gpg_check: yes
 
@@ -10,7 +10,7 @@
  
 
 - name: Install PostgreSQL
-  dnf:
+  yum:
     name: postgresql14-server
     state: present
 
