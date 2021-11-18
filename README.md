@@ -28,23 +28,57 @@ recovery.conf использовалась до 11 версии включите
 
 Проверка репликации
 
+    SELECT * FROM pg_replication_slots;
 
-Создание записи на мастера 
+![]()  
+
+Создание таблицы на мастере
+
+    create database test;
+
+![]()  
 
 Проверка на слейве
 
+    SELECT * FROM pg_stat_wal_receiver;
 
+![]()  
+
+а также проверка, создалась ли таблица
+
+    psql -c "\l"
+
+![]()  
 
 Проверка работы бэкапа 
-Используется rsync backup
+Используется stream replication backup
+Выполнить бэкап
 
-Удаление файлов
+    barman backup master
 
+![]()  
 
-Восстановление из бэкапа
+Удаление базы на мастере
 
+    drop database test;
 
+Остановка postgres
 
+    systemctl stop postgresql-14.service
+
+Восстановление из бэкапа    
+
+    barman recover --remote-ssh-command "ssh postgres@192.168.255.1"  master 20211118T202912 /var/lib/pgsql/14/data/
+
+![]()  
+
+Запуск postgres
+
+    systemctl start postgresql-14.service
+
+Проверка восстановленной базы
+
+![]()  
 
 
 
@@ -53,24 +87,24 @@ recovery.conf использовалась до 11 версии включите
 Pgtune от leopard. + есть книга 
 
 
-DCS - хранит кто лидер и конфигурацию кластера 
-напр. Consul + Patroni
-демон рядом с postgresql
-взаимодействует с etcd
+DCS - хранит кто лидер и конфигурацию кластера  
+напр. Consul + Patroni  
+демон рядом с postgresql    
+взаимодействует с etcd  
 демон принимает решение о promotion/demotion
 
-кластер patroni: 
-consul
-haproxy
-pgbouncer
+кластер patroni:    
+consul  
+haproxy 
+pgbouncer   
 нода Postgresql: pip install patroni, patroni.yml, dir с доступом пользов patroni 
 
 
 
-$ barman backup server-a
-$ barman list-backup server-a
-$ barman check server-a
-$ barman show-backup server-a 20180605T053654
+$ barman backup server-a    
+$ barman list-backup server-a   
+$ barman check server-a     
+$ barman show-backup server-a 20180605T053654       
 
 
 barman recover --remote-ssh-command "ssh postgres@192.168.255.1"  master 20211118T202912 /var/lib/pgsql/14/data/
